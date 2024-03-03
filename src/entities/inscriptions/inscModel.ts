@@ -3,7 +3,6 @@ import {
   Entity,
   OneToOne,
   PrimaryGeneratedColumn,
-  OneToMany,
   JoinColumn,
 } from "typeorm";
 import { User } from "../users/userModel";
