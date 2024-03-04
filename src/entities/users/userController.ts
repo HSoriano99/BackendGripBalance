@@ -119,10 +119,12 @@ export class UserController {
   async update(req: Request, res: Response): Promise<void | Response<any>> {
     try {
       const id = +req.params.id;
-      const data: UpdateDataUser = req.body;
+    //   const data: UpdateDataUser = req.body;
+      let data = req.body;
+      const password = bcrypt.hashSync(data?.new_password, 10)
 
       const userRepository = AppDataSource.getRepository(User);
-      const actualPasswordHash = await userRepository.findOne({
+      const user = await userRepository.findOne({
         where: {
           id: id,
         },
@@ -130,18 +132,26 @@ export class UserController {
           password_hash: true,
         },
       });
+      const actualPasswordHash = user?.password_hash as string;
 
-      if (data?.password !== "" && bcrypt.hashSync(data?.password, 10) === actualPasswordHash?.password_hash) {
+      const isPasswordValid = bcrypt.compareSync(data?.actual_password, actualPasswordHash);
+
+      if (data?.actual_password !== "" && data?.new_password !== "" && isPasswordValid ) {
+        data = {
+            password_hash: password
+        }
         await userRepository.update({ id: id }, data);
 
         res.status(202).json({
-          message: "User updated successfully",
+          message: "User updated successfully with new password",
         });
-      } else if (data?.password !== "" && bcrypt.hashSync(data?.password, 10) !== actualPasswordHash?.password_hash) {
+      } else {
         res.status(500).json({
           message: "Error while updating password",
         });
-      }
+      };
+
+      
     } catch (error) {
       res.status(500).json({
         message: "Error while updating user",
