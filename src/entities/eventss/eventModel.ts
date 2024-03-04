@@ -4,7 +4,6 @@ import {
     OneToOne,
     PrimaryGeneratedColumn,
   } from "typeorm";
-  import { Car } from "../cars/carModel";
   import { Inscription } from "../inscriptions/inscModel";
   
   @Entity("events")
