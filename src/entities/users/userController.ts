@@ -41,20 +41,16 @@ export class UserController {
     }
   }
 
-  async login(
-    req: Request<{}, {}, LoginUserRequestBody>,
-    res: Response
-  ): Promise<void | Response<any>> {
-    const { password, email } = req.body;
+  async login(req : LoginUserRequestBody) {
+
+    const { password, email } = req
 
     const userRepository = AppDataSource.getRepository(User);
 
     try {
       // Validar existencia de email y contraseña
       if (!email || !password) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          message: "Email or password is required",
-        });
+        throw new Error("LOGIN CREDENTIALS REQUIRED");
       }
       // Encontrar un usuario por email
       const user = await userRepository.findOne({
@@ -74,9 +70,7 @@ export class UserController {
 
       // Verificar usuario inexistente
       if (!user) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          message: "Bad email or password",
-        });
+        throw new Error("USER DOESNT EXIT");
       }
 
       // Verificar contraseña si el usuario existe
@@ -84,12 +78,10 @@ export class UserController {
 
       // Verificar contraseña valida
       if (!isPasswordValid) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          message: "Bad email or password",
-        });
-      }
-
-      // Generar token
+        throw new Error("BAD LOGIN CREDENTIALS");
+        };
+    
+    // Generar token
 
       const tokenPayload: TokenData = {
         userId: user.id?.toString() as string,
@@ -104,17 +96,13 @@ export class UserController {
         expiresIn: "3h",
       });
 
-      res.status(StatusCodes.OK).json({
-        message: "Login successfully",
-        token,
-      });
+      return token;
+
     } catch (error) {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: "Error while login",
-        error,
-      });
+        throw error
+      };
     }
-  }
+  
 
   async update(req: Request, res: Response): Promise<void | Response<any>> {
     try {
