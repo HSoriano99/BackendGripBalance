@@ -6,22 +6,19 @@ import jwt from "jsonwebtoken";
 import { AppDataSource } from "../../database/data-source";
 import {
   CreateClientRequestBody,
+  IdParams,
   LoginUserRequestBody,
   TokenData,
-  UpdateDataUser,
+  UpdateDataBody,
+  UpdatePasswordBody,
 } from "../../types/types";
 
 export class UserController {
-  async registerUser(
-    //Proceso de registro de nuevo cliente
-    req: Request<{}, {}, CreateClientRequestBody>,
-    res: Response
-  ): Promise<void | Response<any>> {
-    const { username, password, email } = req.body;
+  async registerUser(req: CreateClientRequestBody) {
+
+    const { username, password, email } = req;
 
     const userRepository = AppDataSource.getRepository(User);
-
-    try {
       //Crear nuevo usuario
       const newUser = userRepository.create({
         username,
@@ -30,24 +27,20 @@ export class UserController {
         role_name: "client",
       });
       await userRepository.save(newUser);
-
-      res.status(201).json(newUser);
-    } catch (error: any) {
-      console.error("Error while creating user:", error);
-      res.status(500).json({
-        message: "Error while creating user",
-        error: error.message,
-      });
-    }
+      //Creamos un nuevo objeto de respuesta para no sacar del controlador el password_hash del nuevo usuario.
+      return {
+        username: newUser.username,
+        email: newUser.email,
+        role_name: newUser.role_name
+        };
   }
 
   async login(req : LoginUserRequestBody) {
 
-    const { password, email } = req
+    const { password, email } = req;
 
     const userRepository = AppDataSource.getRepository(User);
 
-    try {
       // Validar existencia de email y contraseña
       if (!email || !password) {
         throw new Error("LOGIN CREDENTIALS REQUIRED");
@@ -68,13 +61,8 @@ export class UserController {
         },
       });
 
-      // Verificar usuario inexistente
-      if (!user) {
-        throw new Error("USER DOESNT EXIT");
-      }
-
       // Verificar contraseña si el usuario existe
-      const isPasswordValid = bcrypt.compareSync(password, user.password_hash);
+      const isPasswordValid = bcrypt.compareSync(password, user!.password_hash);
 
       // Verificar contraseña valida
       if (!isPasswordValid) {
@@ -84,12 +72,12 @@ export class UserController {
     // Generar token
 
       const tokenPayload: TokenData = {
-        userId: user.id?.toString() as string,
-        userRol: user.role_name as string,
-        userName: user.username as string,
-        userFirstName: user.first_name as string,
-        userLastName: user.last_name as string,
-        userPhoneNumber: user.phone_number as string,
+        userId: user?.id?.toString() as string,
+        userRol: user?.role_name as string,
+        userName: user?.username as string,
+        userFirstName: user?.first_name as string,
+        userLastName: user?.last_name as string,
+        userPhoneNumber: user?.phone_number as string,
       };
 
       const token = jwt.sign(tokenPayload, "123", {
@@ -97,18 +85,17 @@ export class UserController {
       });
 
       return token;
-
-    } catch (error) {
-        throw error
-      };
     }
   
 
-  async update(req: Request, res: Response): Promise<void | Response<any>> {
-    try {
-      const id = +req.params.id;
-    //   const data: UpdateDataUser = req.body;
-      let data = req.body;
+  async updatePassword(params: string, body: UpdatePasswordBody){
+    console.log(params);
+    console.log(body);
+
+      const id = +params;
+    
+      let data = body;
+
       const password = bcrypt.hashSync(data?.new_password, 10)
 
       const userRepository = AppDataSource.getRepository(User);
@@ -120,30 +107,17 @@ export class UserController {
           password_hash: true,
         },
       });
-      const actualPasswordHash = user?.password_hash as string;
+      const currentPasswordHash = user?.password_hash as string;
 
-      const isPasswordValid = bcrypt.compareSync(data?.actual_password, actualPasswordHash);
+      const isPasswordValid = bcrypt.compareSync(data?.current_password, currentPasswordHash);
 
-      if (data?.actual_password !== "" && data?.new_password !== "" && isPasswordValid ) {
-        data = {
+      if (data?.current_password !== "" && data?.new_password !== "" && isPasswordValid ) {
+        const userData = {
             password_hash: password
         }
-        await userRepository.update({ id: id }, data);
+        await userRepository.update({ id: id }, userData);
 
-        res.status(202).json({
-          message: "User updated successfully with new password",
-        });
-      } else {
-        res.status(500).json({
-          message: "Error while updating password",
-        });
-      };
-
-      
-    } catch (error) {
-      res.status(500).json({
-        message: "Error while updating user",
-      });
-    }
+        return({message: "User updated successfully with new password"});
+      } 
   }
 }

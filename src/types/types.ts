@@ -17,7 +17,16 @@ export interface LoginUserRequestBody {
   password: string;
 }
 
-export interface UpdateDataUser {
+export interface UpdatePasswordBody {
+  current_password: string;
+  new_password: string;
+}
+
+export interface IdParams {
+  id: string;
+}
+
+export interface UpdateDataBody {
   email: string ;
   password: string ;
   username: string ;
