@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 import { AppDataSource } from "../../database/data-source";
 import {
   CreateClientRequestBody,
-  IdParams,
   LoginUserRequestBody,
   TokenData,
   UpdateDataBody,
@@ -89,8 +88,6 @@ export class UserController {
   
 
   async updatePassword(params: string, body: UpdatePasswordBody){
-    console.log(params);
-    console.log(body);
 
       const id = +params;
     
@@ -118,6 +115,24 @@ export class UserController {
         await userRepository.update({ id: id }, userData);
 
         return({message: "User updated successfully with new password"});
-      } 
+      }
   }
+
+  async updateUser(params: string, body: UpdateDataBody){
+
+      const id = +params;
+    
+      let data = body;
+
+      const userRepository = AppDataSource.getRepository(User);
+      const user = await userRepository.findOneBy({id: id});
+
+      if (data.email === "" || data.first_name === "" || data.last_name === "" || data.phone_number === "" || data.username === "" ) {
+        throw new Error("CAN NOT UPDATE WITH EMPTY FIELDS");
+      }
+       
+      await userRepository.update({ id: id }, data);
+
+      return({message: "User updated successfully"});
+    } 
 }

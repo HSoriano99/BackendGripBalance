@@ -22,13 +22,10 @@ export interface UpdatePasswordBody {
   new_password: string;
 }
 
-export interface IdParams {
-  id: string;
-}
-
 export interface UpdateDataBody {
-  email: string ;
-  password: string ;
-  username: string ;
-  phone_number: string ;
+  email?: string ;
+  username?: string ;
+  phone_number?: string;
+  first_name?: string;
+  last_name?: string;
 }

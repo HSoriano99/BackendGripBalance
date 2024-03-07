@@ -27,4 +27,12 @@ router.patch("/update-password/:id", async (req, res, next) => {
     }
 });
 
+router.patch("/update-user/:id", async (req, res, next) => {
+    try {
+        res.json(await userController.updateUser(req.params.id, req.body));
+    } catch (e) {
+        next(e);
+    }
+});
+
 export default router;
