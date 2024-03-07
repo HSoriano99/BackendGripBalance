@@ -9,6 +9,8 @@ import {
   UpdateDataBody,
   UpdatePasswordBody,
 } from "../../types/types";
+import { Inscription } from "../inscriptions/inscModel";
+import { Car } from "../cars/carModel";
 
 export class UserController {
   async registerUser(req: CreateClientRequestBody) {
@@ -133,4 +135,46 @@ export class UserController {
 
       return({message: "User updated successfully"});
     } 
+
+    async getCompleteUser(params: string){
+
+      const id = +params;
+
+      const userRepository = AppDataSource.getRepository(User);
+
+      const user = await userRepository.findOne({
+        where: {id: id},
+        relations: {
+          car:true,
+          inscription:true,
+        },
+        select: {
+          id:true,
+          username:true,
+          email:true,
+          first_name:true,
+          last_name:true,
+          phone_number:true,
+          car:{
+            id:true,
+            car_brand:true,
+            car_model:true,
+            car_spec: true,
+            car_category:true,
+          },
+          inscription:{
+            id:true,
+            price:true,
+            event_id:true,
+          }
+        }
+      })
+
+      //RELACION A INSCRIPTIONS NECESITA 1:N?
+      //DATOS DE TABLA CAR_SPEC? MAPEAR ARRAY DE CARS PARA BUSCAR CON SU ID EN TABLA CAR_SPEC
+      //LO MISMO EN INSCRIPTIONS CON EVENTS
+      return(user);
+    } 
+
+
 }

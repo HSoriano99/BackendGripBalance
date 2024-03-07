@@ -25,11 +25,6 @@ export class CreateEvents1709398476511 implements MigrationInterface {
             length: "50",
           },
           {
-            name: "car_model",
-            type: "varchar",
-            length: "50",
-          },
-          {
             name: "event_status",
             type: "enum",
             enum: ["finished", "open", "closed"],
