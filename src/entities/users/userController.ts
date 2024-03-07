@@ -1,7 +1,5 @@
-import { Request, Response } from "express";
 import { User } from "../users/userModel";
 import bcrypt from "bcrypt";
-import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 import { AppDataSource } from "../../database/data-source";
 import {

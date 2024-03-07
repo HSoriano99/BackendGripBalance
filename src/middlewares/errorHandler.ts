@@ -7,6 +7,9 @@ export const errorHandler = (err: Error | QueryFailedError, req: Request, res: R
     if (err.message === "BAD LOGIN CREDENTIALS") return res.status(403).json({ error: "BAD_LOGIN_CREDENTIALS" });
     if (err.message === "CAN NOT UPDATE WITH EMPTY FIELDS") return res.status(403).json({ error: "EMPTY FIELDS ARE NOT PERMITTED" });
 
+    if(err.message === 'AUTH REQUIRED') return res.status(403).json({error: 'AUTH_REQUIRED'});
+    if(err.message === 'ADMIN AUTH REQUIRED') return res.status(403).json({error: 'ADMIN_AUTH_REQUIRED'});
+
     // Error desconocido: imprimir y enviar estado HTTP 500
     console.error(err);
     return res.status(500).json({ error: "SERVER_ERROR" });

@@ -6,10 +6,10 @@ export interface CreateClientRequestBody {
 export interface TokenData {
   userId: string;
   userRol: string;
-  userName: string;
-  userFirstName: string;
-  userLastName: string;
-  userPhoneNumber: string;
+  userName?: string;
+  userFirstName?: string;
+  userLastName?: string;
+  userPhoneNumber?: string;
 }
 
 export interface LoginUserRequestBody {

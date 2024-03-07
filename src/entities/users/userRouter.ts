@@ -1,4 +1,6 @@
 import express from "express";
+import { auth } from "../../middlewares/auth";
+import { isAdmin } from "../../middlewares/isAdmin";
 import { UserController } from "./userController";
 
 
@@ -19,7 +21,7 @@ router.post("/login", async (req, res, next) => {
         next(e);
     }
 });
-router.patch("/update-password/:id", async (req, res, next) => {
+router.patch("/update-password/:id", auth, async (req, res, next) => {
     try {
         res.json(await userController.updatePassword(req.params.id, req.body));
     } catch (e) {
@@ -27,7 +29,7 @@ router.patch("/update-password/:id", async (req, res, next) => {
     }
 });
 
-router.patch("/update-user/:id", async (req, res, next) => {
+router.patch("/update-user/:id", auth, isAdmin, async (req, res, next) => {
     try {
         res.json(await userController.updateUser(req.params.id, req.body));
     } catch (e) {
