@@ -6,6 +6,7 @@ export const errorHandler = (err: Error | QueryFailedError, req: Request, res: R
     if (err.message === "LOGIN CREDENTIALS REQUIRED") return res.status(403).json({ error: "EMAIL_OR_PASSWORD_REQUIRED" });
     if (err.message === "BAD LOGIN CREDENTIALS") return res.status(403).json({ error: "BAD_LOGIN_CREDENTIALS" });
     if (err.message === "CAN NOT UPDATE WITH EMPTY FIELDS") return res.status(403).json({ error: "EMPTY FIELDS ARE NOT PERMITTED" });
+    if (err.message === "WRONG CURRENT PASSWORD") return res.status(403).json({ error: "VERIFY_YOUR_PASSWORD" });
 
     if(err.message === 'AUTH REQUIRED') return res.status(403).json({error: 'AUTH_REQUIRED'});
     if(err.message === 'ADMIN AUTH REQUIRED') return res.status(403).json({error: 'ADMIN_AUTH_REQUIRED'});

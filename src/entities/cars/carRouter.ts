@@ -9,7 +9,15 @@ const carController = new CarController();
 
 router.get("/get-user-car/:id", auth, async (req, res, next) => {
     try {
-        res.json(await carController.getCarsByUser(req.params.id));
+        res.json(await carController.getCarsByUser(req.params.id, req.query));
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.post("/register-user-car", async (req, res, next) => {
+    try {
+        res.json(await carController.registerUserCar(req.body));
     } catch (e) {
         next(e);
     }

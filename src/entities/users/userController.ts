@@ -91,7 +91,11 @@ export class UserController {
     
       let data = body;
 
-      const password = bcrypt.hashSync(data?.new_password, 10)
+      if (data.current_password === "" || data.new_password === "" ) {
+        throw new Error("CAN NOT UPDATE WITH EMPTY FIELDS");
+      }
+
+      const newPasswordHash = bcrypt.hashSync(data?.new_password, 10)
 
       const userRepository = AppDataSource.getRepository(User);
       const user = await userRepository.findOne({
@@ -106,13 +110,15 @@ export class UserController {
 
       const isPasswordValid = bcrypt.compareSync(data?.current_password, currentPasswordHash);
 
-      if (data?.current_password !== "" && data?.new_password !== "" && isPasswordValid ) {
+      if ( isPasswordValid === true) {
         const userData = {
-            password_hash: password
+            password_hash: newPasswordHash
         }
         await userRepository.update({ id: id }, userData);
 
-        return({message: "User updated successfully with new password"});
+        return({message: "User updated successfully with new password", userData});
+      } else {
+        throw new Error("WRONG CURRENT PASSWORD");
       }
   }
 
@@ -133,7 +139,7 @@ export class UserController {
       return({message: "User updated successfully"});
     } 
 
-    async getCompleteUser(params: string){
+    async getCompleteUser(params: string){//hacer formato similar para allUsers de vista Admin
 
       const id = +params;
 
@@ -142,6 +148,7 @@ export class UserController {
       const user = await userRepository.findOne({
         where: {id: id},
         relations: {
+          //retirar las relaciones con car e inscriptions e incluir una llamada paginada a cada entidad.
           car:true,
           inscription:true,
         },
@@ -163,6 +170,7 @@ export class UserController {
             id:true,
             price:true,
             event_id:true,
+            car_id:true
           }
         }
       })

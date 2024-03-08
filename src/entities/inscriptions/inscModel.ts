@@ -17,6 +17,9 @@ export class Inscription {
   user_id!: number;
 
   @Column()
+  car_id!: number;
+
+  @Column()
   event_id!: number;
 
   @Column()
