@@ -4,6 +4,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   JoinColumn,
+  ManyToOne,
 } from "typeorm";
 import { User } from "../users/userModel";
 import { Event } from "../eventss/eventModel";
@@ -25,9 +26,9 @@ export class Inscription {
   @Column()
   price?: string;
 
-  // 1:1 con Users
-  @OneToOne(() => User, (user) => user.inscription)
-  @JoinColumn({ name: "user_id" })
+  // N:1 con Users
+  @ManyToOne(() => User, (user) => user.inscription)
+  @JoinColumn({ name: "user_id", referencedColumnName: "id"})
   user!: User;
 
   // 1:1 con Events

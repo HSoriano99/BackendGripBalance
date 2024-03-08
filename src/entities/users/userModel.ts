@@ -38,8 +38,8 @@ export class User {
   @OneToMany(() => Car, (car) => car.user)
   car?: Car;
 
-  // 1:1 con Inscriptions
-  @OneToOne(() => Inscription, (inscription) => inscription.user)
+  // 1:N con Inscriptions
+  @OneToMany(() => Inscription, (inscription) => inscription.user)
   inscription?: Inscription;
 
  
