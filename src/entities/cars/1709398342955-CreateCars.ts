@@ -16,7 +16,6 @@ export class CreateCars1709398342955 implements MigrationInterface {
           {
             name: "user_id",
             type: "int",
-            isUnique: true,
           },
           {
             name: "car_image",

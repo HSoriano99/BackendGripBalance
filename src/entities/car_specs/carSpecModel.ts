@@ -1,13 +1,14 @@
 import {
     Column,
     Entity,
+    JoinColumn,
     OneToOne,
     PrimaryGeneratedColumn,
   } from "typeorm";
 
  import { Car } from "../cars/carModel";
   
-  @Entity("cars")
+  @Entity("car_specs")
   export class CarSpec {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -32,5 +33,6 @@ import {
   
     // 1:1 con Cars
     @OneToOne(() => Car, (car) => car.carSpec)
-    car?: Car;
+    @JoinColumn ({name: "car_id", referencedColumnName: "id"})
+    car!: Car;
   }

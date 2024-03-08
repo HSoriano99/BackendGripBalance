@@ -16,12 +16,14 @@ export class CreateInscriptions1709398512498 implements MigrationInterface {
           {
             name: "user_id",
             type: "int",
-            isUnique: true,
+          },
+          {
+            name: "car_id",
+            type: "int",
           },
           {
             name: "event_id",
             type: "int",
-            isUnique: true,
           },
           {
             name: "price",

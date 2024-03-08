@@ -9,8 +9,6 @@ import {
   UpdateDataBody,
   UpdatePasswordBody,
 } from "../../types/types";
-import { Inscription } from "../inscriptions/inscModel";
-import { Car } from "../cars/carModel";
 
 export class UserController {
   async registerUser(req: CreateClientRequestBody) {
@@ -125,7 +123,6 @@ export class UserController {
       let data = body;
 
       const userRepository = AppDataSource.getRepository(User);
-      const user = await userRepository.findOneBy({id: id});
 
       if (data.email === "" || data.first_name === "" || data.last_name === "" || data.phone_number === "" || data.username === "" ) {
         throw new Error("CAN NOT UPDATE WITH EMPTY FIELDS");
@@ -169,10 +166,6 @@ export class UserController {
           }
         }
       })
-
-      //RELACION A INSCRIPTIONS NECESITA 1:N?
-      //DATOS DE TABLA CAR_SPEC? MAPEAR ARRAY DE CARS PARA BUSCAR CON SU ID EN TABLA CAR_SPEC
-      //LO MISMO EN INSCRIPTIONS CON EVENTS
       return(user);
     } 
 

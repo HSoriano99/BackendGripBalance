@@ -38,7 +38,7 @@ import {
      @JoinColumn({name: "user_id", referencedColumnName: "id"})
      user!: User;
   
-    // 1:1 con Inscriptions
+    // 1:1 con Car_Spec
     @OneToOne(() => CarSpec, (carSpec) => carSpec.car)
     carSpec?: CarSpec;
   }
