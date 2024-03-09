@@ -36,11 +36,11 @@ export class User {
 
   // 1:N con Cars
   @OneToMany(() => Car, (car) => car.user)
-  car?: Car;
+  car?: Car[];
 
   // 1:N con Inscriptions
   @OneToMany(() => Inscription, (inscription) => inscription.user)
-  inscription?: Inscription;
+  inscription?: Inscription[];
 
  
 }
