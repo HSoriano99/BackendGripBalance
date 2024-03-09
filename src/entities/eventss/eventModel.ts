@@ -27,7 +27,7 @@ import {
     finish_date!: string;
 
     @Column({ type: "enum", enum: ["street", "tracktool", "racecar"] })
-    event_cars_spec!: string;
+    event_car_spec!: string;
 
     @Column({ type: "enum", enum: ["racing", "drifting", "timeattack"] })
     event_category!: string;

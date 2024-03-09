@@ -149,8 +149,12 @@ export class UserController {
         where: {id: id},
         relations: {
           //retirar las relaciones con car e inscriptions e incluir una llamada paginada a cada entidad.
-          car:true,
-          inscription:true,
+          car: {
+            carSpec: true
+          },
+          inscription: {
+            event:true
+          }
         },
         select: {
           id:true,
@@ -170,12 +174,45 @@ export class UserController {
             id:true,
             price:true,
             event_id:true,
-            car_id:true
+            car_id:true,
           }
         }
       })
       return(user);
     } 
+//________________________________________________________________________
+    // async getCompleteUser(params: string){//hacer formato similar para allUsers de vista Admin
+     
+    //   const id = +params;
+  
+    //   const userRepository = AppDataSource.getRepository(User);
+  
+    //   const user = await userRepository.findOne(User, {
+    //     where: {id: id},
+    //     relations: [
+    //       {property: "car",
+    //        select: ["id","car_model", "car_brand"],
+    //        relations: [{property: "carSpec",
+    //           select: ["id", "car_engine", "car_tires"]}]
+    //     },
+    //     {property: "inscription",
+    //      select: ["id"],
+    //       relations: {
+    //           property: "event",
+    //           select: ["id", "event_name"]
+    //       }
+    //   }],
+    //     select: {
+    //       id:true,
+    //       username:true,
+    //       email:true,
+    //       first_name:true,
+    //       last_name:true,
+    //       phone_number:true,
+    //     }
+    //   })
+    //   return(user);
+    // }
 
 
 }
