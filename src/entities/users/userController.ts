@@ -160,7 +160,7 @@ export class UserController {
     const id = +params;
 
     const userRepository = AppDataSource.getRepository(User);
-//1:PROBAR PAGINACION CON QUERY, 2: EXTENDERLO A LAS INSCRIPCIONES Y EVENTOS, 3: HACER SELECTS DE LA RELACION DE LA RELACION
+  //FUTURO: HACER SELECTS DE LA RELACION DE LA RELACION
     const user = await userRepository.findOne({
       where: { id: id },
       relations: {
@@ -211,11 +211,19 @@ export class UserController {
     const userCars = user?.car as Car[]; //eliminamos la inferencia de tipos de TS
     const userInscs = user?.inscription as Inscription[]//eliminamos la inferencia de tipos de TS
 
+    const userCarsCount = userCars.length;
+    const userInscsCount = userInscs.length;
+
     user.car = userCars.slice(startIndexCar, endIndexCar);
     user.inscription = userInscs.slice(startIndexInsc, endIndexInsc);
 
     //________________________________________________________________________
+    const response = {
+      user,
+      userCarsCount,
+      userInscsCount,
+    }
 
-    return user;
+    return response;
   }
 }
