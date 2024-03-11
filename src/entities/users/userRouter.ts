@@ -39,7 +39,7 @@ router.patch("/update-user/:id", auth, isAdmin, async (req, res, next) => {
 
 router.get("/get-complete-user/:id", async (req, res, next) => {
     try {
-        res.json(await userController.getCompleteUser(req.params.id));
+        res.json(await userController.getCompleteUser(req.params.id, req.query));
     } catch (e) {
         next(e);
     }

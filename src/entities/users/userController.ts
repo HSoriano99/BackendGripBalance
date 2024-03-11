@@ -10,12 +10,19 @@ import {
   UpdatePasswordBody,
 } from "../../types/types";
 import { Car } from "../cars/carModel";
+import { Inscription } from "../inscriptions/inscModel";
 
 export class UserController {
   async registerUser(req: CreateClientRequestBody) {
     const { username, password, email } = req;
 
+    // Validar existencia de los campos recogidos
+    if (!username || !email || !password ) {
+      throw new Error("REGISTER CREDENTIALS REQUIRED");
+    }
+
     const userRepository = AppDataSource.getRepository(User);
+    
     //Crear nuevo usuario
     const newUser = userRepository.create({
       username,
@@ -147,13 +154,13 @@ export class UserController {
     return { message: "User updated successfully" };
   }
 
-  async getCompleteUser(params: string) {
+  async getCompleteUser(params: string, query: any) {
     //hacer formato similar para allUsers de vista Admin
 
     const id = +params;
 
     const userRepository = AppDataSource.getRepository(User);
-
+//1:PROBAR PAGINACION CON QUERY, 2: EXTENDERLO A LAS INSCRIPCIONES Y EVENTOS, 3: HACER SELECTS DE LA RELACION DE LA RELACION
     const user = await userRepository.findOne({
       where: { id: id },
       relations: {
@@ -188,20 +195,24 @@ export class UserController {
     });
 
     //Paginación del arrray de Cars que devuelve la consulta a la DB, debido a no poder incluir paginacion en la DB directamente en la consulta sin recurrir al QueryBuilder
-    
+
     if (!user) {
       return;
     }
+    let { pageCar, limitCar, pageInsc, limitInsc } = query; //Desde el frontal SIEMPRE DEBEMOS PASAR QUERY PARAMS A ESTA LLAMADA, SINO, NOS DEVOLVERÁ EL ARRAY VACÍO.
 
-    let page = 2;
-    let limit = 1;
+    let startIndexCar = (pageCar - 1) * limitCar;
+    let endIndexCar = startIndexCar + limitCar;
 
-    let startIndex = (page - 1) * limit;
-    let endIndex = startIndex + limit;
+    let startIndexInsc = (pageInsc - 1) * limitInsc;
+    let endIndexInsc = startIndexInsc + limitInsc;
+
 
     const userCars = user?.car as Car[]; //eliminamos la inferencia de tipos de TS
+    const userInscs = user?.inscription as Inscription[]//eliminamos la inferencia de tipos de TS
 
-    user.car = userCars.slice(startIndex, endIndex);
+    user.car = userCars.slice(startIndexCar, endIndexCar);
+    user.inscription = userInscs.slice(startIndexInsc, endIndexInsc);
 
     //________________________________________________________________________
 
