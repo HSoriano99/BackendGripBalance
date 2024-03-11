@@ -199,13 +199,13 @@ export class UserController {
     if (!user) {
       return;
     }
-    let { pageCar, limitCar, pageInsc, limitInsc } = query; //Desde el frontal SIEMPRE DEBEMOS PASAR QUERY PARAMS A ESTA LLAMADA, SINO, NOS DEVOLVERÁ EL ARRAY VACÍO.
+    let { carPage, carLimit, inscPage, inscLimit } = query; //Desde el frontal SIEMPRE DEBEMOS PASAR QUERY PARAMS A ESTA LLAMADA, SINO, NOS DEVOLVERÁ EL ARRAY VACÍO.
 
-    let startIndexCar = (pageCar - 1) * limitCar;
-    let endIndexCar = startIndexCar + limitCar;
+    let startIndexCar = (carPage - 1) * carLimit;
+    let endIndexCar = startIndexCar + carLimit;
 
-    let startIndexInsc = (pageInsc - 1) * limitInsc;
-    let endIndexInsc = startIndexInsc + limitInsc;
+    let startIndexInsc = (inscPage - 1) * inscLimit;
+    let endIndexInsc = startIndexInsc + inscLimit;
 
 
     const userCars = user?.car as Car[]; //eliminamos la inferencia de tipos de TS
