@@ -29,7 +29,7 @@ router.patch("/update-password/:id", auth, async (req, res, next) => {
     }
 });
 
-router.patch("/update-user/:id", auth, isAdmin, async (req, res, next) => {
+router.patch("/update-user/:id", auth, async (req, res, next) => {
     try {
         res.json(await userController.updateUser(req.params.id, req.body));
     } catch (e) {

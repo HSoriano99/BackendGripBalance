@@ -48,7 +48,9 @@ export class UserController {
     if (!email || !password) {
       throw new Error("LOGIN CREDENTIALS REQUIRED");
     }
-    // Encontrar un usuario por email
+    // Encontrar un usuario por email antes de comparar la contraseña introducida para ahorrar recursos innecesarios.
+    //Tambien podriamos hasehar la contraseña introducida y buscar en la db con ella un user,
+    //asi no tendríamos que hacer un select de nuestra contraseña para posteriormente compararla, asegurando aún mas la seguridad.
     const user = await userRepository.findOne({
       where: {
         email: email,
