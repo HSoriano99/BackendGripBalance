@@ -3,10 +3,10 @@ import { Car } from "./carModel";
 
 export class CarController {
   async getCarsByUser(params: string, query: any) {
-    let { page, skip } = query;
+    let { page, limit } = query;
 
     let currentPage = page ? +page : 1;
-    let itemsPerPage = skip ? +skip : 3;
+    let itemsPerPage = limit ? +limit : 3;
 
     const userId = +params;
 
@@ -41,7 +41,7 @@ export class CarController {
 
     const response = {
       totalCars: count,
-      skip: itemsPerPage,
+      limit: itemsPerPage,
       page: currentPage,
       results: allCars,
     };

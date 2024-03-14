@@ -29,3 +29,11 @@ export interface UpdateDataBody {
   first_name?: string;
   last_name?: string;
 }
+
+export interface UpdateCarSpecBody {
+  car_aero?: string ;
+  car_engine?: string ;
+  car_suspension?: string;
+  car_tires?: string;
+  car_differential?: string;
+}
