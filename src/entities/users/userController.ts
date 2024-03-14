@@ -183,6 +183,7 @@ export class UserController {
         car: {
           id: true,
           car_brand: true,
+          car_image:true,
           car_model: true,
           car_spec: true,
           car_category: true,
@@ -224,6 +225,10 @@ export class UserController {
       user,
       userCarsCount,
       userInscsCount,
+      carPage,
+      carLimit,
+      inscPage,
+      inscLimit
     }
 
     return response;
