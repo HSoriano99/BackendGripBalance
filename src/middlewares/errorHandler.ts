@@ -8,6 +8,7 @@ export const errorHandler = (err: Error | QueryFailedError, req: Request, res: R
     if (err.message === "CAN NOT UPDATE WITH EMPTY FIELDS") return res.status(403).json({ error: "EMPTY FIELDS ARE NOT PERMITTED" });
     if (err.message === "WRONG CURRENT PASSWORD") return res.status(403).json({ error: "VERIFY_YOUR_PASSWORD" });
     if (err.message === "REGISTER CREDENTIALS REQUIRED") return res.status(403).json({ error: "ALL_FIELDS_REQUIRED" });
+    if (err.message === "ALL FIELDS REQUIRED") return res.status(403).json({ error: "ALL_FIELDS_REQUIRED" });
 
     if(err.message === 'AUTH REQUIRED') return res.status(403).json({error: 'AUTH_REQUIRED'});
     if(err.message === 'ADMIN AUTH REQUIRED') return res.status(403).json({error: 'ADMIN_AUTH_REQUIRED'});

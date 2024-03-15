@@ -1,9 +1,9 @@
 import { AppDataSource } from "../../database/data-source";
-import { UpdateCarSpecBody } from "../../types/types";
+import { CarSpecBody } from "../../types/types";
 import { CarSpec } from "./carSpecModel";
 
 export class CarSpecController{
-    async updateCarSpecs(params: string, body: UpdateCarSpecBody){
+    async updateCarSpecs(params: string, body: CarSpecBody){
         const carSpecRepository = AppDataSource.getRepository(CarSpec);
 
         const id = +params;
@@ -21,6 +21,32 @@ export class CarSpecController{
 
         return { message: "Car Specs updated successfully" };
     }
+
+    async registerCarSpec(params: string, body: CarSpecBody) {
+        const id = +params;
+        const {car_aero, car_engine, car_suspension, car_tires, car_differential} = body;
+    
+        // Validar existencia de los campos recogidos
+        if (!car_aero || !car_engine || !car_suspension || !car_tires || !car_differential) {
+          throw new Error("ALL FIELDS REQUIRED");
+        }
+    
+        const carSpecRepository = AppDataSource.getRepository(CarSpec);
+    
+        //Crear nuevo coche
+        const newCarSpec = carSpecRepository.create({
+          car_id: id,
+          car_aero,
+          car_engine,
+          car_suspension,
+          car_tires,
+          car_differential
+        });
+        await carSpecRepository.save(newCarSpec);
+    
+        return(newCarSpec)
+    
+      }
 
 
 

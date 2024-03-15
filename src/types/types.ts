@@ -30,10 +30,23 @@ export interface UpdateDataBody {
   last_name?: string;
 }
 
-export interface UpdateCarSpecBody {
+export interface CarSpecBody {
   car_aero?: string ;
   car_engine?: string ;
   car_suspension?: string;
   car_tires?: string;
   car_differential?: string;
+}
+
+export interface RegisterCarAndCarSpecBody {
+  car_aero?: string ;
+  car_engine?: string ;
+  car_suspension?: string;
+  car_tires?: string;
+  car_differential?: string;
+  car_brand?: string;
+  car_model?: string;
+  car_spec?: string;
+  car_category?: string;
+  car_image?: string;
 }

@@ -15,9 +15,17 @@ router.get("/get-user-car/:id", auth, async (req, res, next) => {
     }
 });
 
-router.post("/register-user-car", async (req, res, next) => {
+router.post("/register-user-car-carspec/:id", auth, async (req, res, next) => {
     try {
-        res.json(await carController.registerUserCar(req.body));
+        res.json(await carController.registerUserCarWithCarSpecs(req.params.id, req.body));
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.post("/register-user-car/:id", auth, async (req, res, next) => {
+    try {
+        res.json(await carController.registerUserCar(req.params.id, req.body));
     } catch (e) {
         next(e);
     }

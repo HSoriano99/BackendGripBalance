@@ -1,4 +1,6 @@
 import { AppDataSource } from "../../database/data-source";
+import { RegisterCarAndCarSpecBody } from "../../types/types";
+import { CarSpec } from "../car_specs/carSpecModel";
 import { Car } from "./carModel";
 
 export class CarController {
@@ -48,5 +50,68 @@ export class CarController {
     return response;
   }
 
-  async registerUserCar(req: Request) {}
+  async registerUserCarWithCarSpecs(params: string, body: RegisterCarAndCarSpecBody) {
+    const userId = +params;
+    const {car_brand, car_model, car_spec, car_category, car_image, car_aero, car_engine, car_suspension, car_tires, car_differential} = body;
+
+    // Validar existencia de los campos recogidos
+    if (!car_brand || !car_model || !car_spec || !car_category || !car_image || !car_aero || !car_engine || !car_suspension || !car_tires || !car_differential) {
+      throw new Error("ALL FIELDS REQUIRED");
+    }
+
+    const carRepository = AppDataSource.getRepository(Car);
+    const carSpecRepository = AppDataSource.getRepository(CarSpec);
+
+    //Crear nuevo coche
+    const newCar = carRepository.create({
+      user_id: userId,
+      car_brand,
+      car_model,
+      car_image,
+      car_spec,
+      car_category
+    });
+    await carRepository.save(newCar);
+
+    //Crear nueva carSpec para el coche recien creado
+    const carId = newCar.id
+    const newCarSpec = carSpecRepository.create({
+      car_id: carId,
+      car_aero,
+      car_engine,
+      car_suspension,
+      car_tires,
+      car_differential
+    });
+    await carSpecRepository.save(newCarSpec);
+
+    return(newCarSpec)
+
+  }
+
+  async registerUserCar(params: string, body: RegisterCarAndCarSpecBody) {
+    const userId = +params;
+    const {car_brand, car_model, car_spec, car_category, car_image} = body;
+
+    // Validar existencia de los campos recogidos
+    if (!car_brand || !car_model || !car_spec || !car_category || !car_image) {
+      throw new Error("ALL FIELDS REQUIRED");
+    }
+
+    const carRepository = AppDataSource.getRepository(Car);
+
+    //Crear nuevo coche
+    const newCar = carRepository.create({
+      user_id: userId,
+      car_brand,
+      car_model,
+      car_image,
+      car_spec,
+      car_category
+    });
+    await carRepository.save(newCar);
+
+    return(newCar)
+
+  }
 }

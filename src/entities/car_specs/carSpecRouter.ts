@@ -15,5 +15,13 @@ router.patch("/update-carSpec-car/:id", auth, async (req, res, next) => {
     }
 });
 
+router.post("/register-carSpec-car/:id", auth, async (req, res, next) => {
+    try {
+        res.json(await carSpecController.registerCarSpec(req.params.id, req.body));
+    } catch (e) {
+        next(e);
+    }
+});
+
 
 export default router;
