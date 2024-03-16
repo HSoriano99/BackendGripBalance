@@ -87,6 +87,31 @@ Tecnologías utilizadas:
         }
     ```
 
+- UPDATE PASSWORD
+
+          PATCH http://localhost:3000/api/users/update-password/:id
+
+    body:
+
+    ```js
+        {
+            "current_password": "12345",
+            "new_password": "password"
+        }
+    ```
+
+- UPDATE USER
+
+          PATCH http://localhost:3000/api/users/update-user/:id
+
+    body:
+
+    ```js
+        {
+            "username": "Alexito76"
+        }
+    ```
+
 - GET COMPLETE PROFILE (NUESTRO UNICAMENTE, DEBEREMOS ESTAR LOGEADOS)
 
           GET http://localhost:3000/api/users/get-complete-user/:id?pageCar=2&limitCar=1&pageInsc=2&limitInsc=1
@@ -98,30 +123,6 @@ Tecnologías utilizadas:
           GET http://localhost:3000/api/cars/get-user-car/:id?pageCar=2&limitCar=1&pageInsc=2&limitInsc=1
 
     - Insertamos el ID de nuestro user así como las querys de paginación para los coches.
-
-- UPDATE USER
-
-          PATCH http://localhost:3000/api/users/update-user/:id
-
-    body:
-
-    ```js
-        {
-            "username": "Davicin76"
-        }
-    ```
-- UPDATE PASSWORD
-
-          PATCH http://localhost:3000/api/users/update-password/:id
-
-    body:
-
-    ```js
-        {
-            "username": "Davicin76"
-        }
-    ```
-
 
 - CARS
 
