@@ -21,7 +21,7 @@
 
 ## Objetivo
 
-Este proyecto constituye una API funcional en TypeORM conectada a una base de datos SQL
+Este proyecto constituye una API funcional en TypeORM conectada a una base de datos SQL y al frontal que estoy desarrollando en React https://github.com/HSoriano99/FrontendGripBalance
 
 ## Sobre el proyecto
 
