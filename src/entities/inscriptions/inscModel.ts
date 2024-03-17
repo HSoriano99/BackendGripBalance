@@ -31,8 +31,8 @@ export class Inscription {
   @JoinColumn({ name: "user_id", referencedColumnName: "id"})
   user!: User;
 
-  // 1:1 con Events
-  @OneToOne(() => Event, (event) => event.inscription)
+  // N:1 con Events
+  @ManyToOne(() => Event, (event) => event.inscription)
   @JoinColumn({ name: "event_id" })
   event!: Event;
 

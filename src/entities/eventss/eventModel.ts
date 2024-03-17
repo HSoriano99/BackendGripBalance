@@ -1,6 +1,7 @@
 import {
     Column,
     Entity,
+    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
   } from "typeorm";
@@ -32,7 +33,7 @@ import {
     @Column({ type: "enum", enum: ["racing", "drifting", "timeattack"] })
     event_category!: string;
   
-    // 1:1 con Inscriptions
-    @OneToOne(() => Inscription, (inscription) => inscription.event)
-    inscription?: Inscription;
+    // 1:N con Inscriptions
+    @OneToMany(() => Inscription, (inscription) => inscription.event)
+    inscription?: Inscription[];
   }
