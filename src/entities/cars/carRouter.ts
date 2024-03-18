@@ -31,4 +31,12 @@ router.post("/register-user-car/:id", auth, async (req, res, next) => {
     }
 });
 
+router.delete("/delete-user-car/:id", auth, async (req, res, next) => {
+    try {
+        res.json(await carController.deleteUserCar(req.params.id));
+    } catch (e) {
+        next(e);
+    }
+});
+
 export default router;

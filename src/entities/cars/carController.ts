@@ -114,4 +114,15 @@ export class CarController {
     return(newCar)
 
   }
+
+  async deleteUserCar(params: string) {
+    const id = +params;
+
+    const carRepository = AppDataSource.getRepository(Car);
+    await carRepository.delete(id);
+
+    return("Car deleted succesfully")
+  }
+
+
 }
